@@ -1,0 +1,8 @@
+{
+  "check_interval_minutes": 5,
+  "websites": [
+    "https://google.com",
+    "https://example.com"
+  ],
+  "ssl_expiry_warning_days": 15
+}
