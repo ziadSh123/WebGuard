@@ -4,6 +4,7 @@ import sqlite3
 import pandas as pd
 import streamlit as st
 
+# Path to the SQLite DB
 DB_PATH = Path(__file__).parent.parent / "db" / "webguard.db"
 
 
@@ -13,6 +14,7 @@ def load_data():
         SELECT
             id,
             url,
+            client,
             checked_at,
             status_code,
             is_up,
@@ -36,11 +38,22 @@ def main():
         st.warning("No data yet. Make sure the monitor is running.")
         return
 
-    urls = df["url"].unique()
+    # --- Client selection ---
+    clients = df["client"].fillna("Unknown").unique().tolist()
+    selected_client = st.selectbox("Select Client", options=clients)
+
+    df_client = df[df["client"].fillna("Unknown") == selected_client]
+
+    # --- Website selection (for that client) ---
+    urls = df_client["url"].unique().tolist()
     selected_url = st.selectbox("Select Website", options=urls)
 
-    filtered = df[df["url"] == selected_url]
+    filtered = df_client[df_client["url"] == selected_url]
 
+    st.subheader(f"Client: {selected_client}")
+    st.markdown(f"**Website:** {selected_url}")
+
+    # --- Current Status ---
     st.subheader("Current Status")
     latest = filtered.iloc[0]
 
@@ -61,9 +74,11 @@ def main():
     if latest["error"]:
         st.error(f"Error: {latest['error']}")
 
+    # --- Recent Checks Table ---
     st.subheader("Recent Checks")
     st.dataframe(filtered)
 
+    # --- Response Time Trend ---
     st.subheader("Response Time Trend")
     st.line_chart(filtered.set_index("checked_at")["response_time"])
 

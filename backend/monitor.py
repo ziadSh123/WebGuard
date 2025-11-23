@@ -20,7 +20,7 @@ def load_config():
         return json.load(f)
 
 
-def check_single_website(url: str, ssl_warning_days: int):
+def check_single_website(url: str, client: str, ssl_warning_days: int):
     status_code = None
     response_time = None
     ssl_ok = None
@@ -73,13 +73,15 @@ def check_single_website(url: str, ssl_warning_days: int):
     # Save to DB
     insert_check(
         url=url,
+        client=client,
         status_code=status_code,
         is_up=is_up,
         response_time=response_time,
         ssl_ok=ssl_ok,
         ssl_days_left=ssl_days_left,
         error=error
-    )
+)
+
 
 
 def job():
@@ -89,14 +91,16 @@ def job():
     print("Running monitoring job...")
 
     for site in websites:
-        # site can be a dict {"url": "...", "client": "..."} or just a string
+        # site is expected to be a dict {"url": "...", "client": "..."}
         if isinstance(site, dict):
             url = site.get("url")
+            client = site.get("client", "Unknown")
         else:
             url = site
+            client = "Unknown"
 
-        print(f"Checking {url}...")
-        check_single_website(url, ssl_warning_days)
+        print(f"Checking {url} (Client: {client})...")
+        check_single_website(url, client, ssl_warning_days)
 
 
 def main():
@@ -115,6 +119,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nWebGuard monitor stopped by user.")
 
 

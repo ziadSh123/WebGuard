@@ -15,6 +15,7 @@ def init_db():
     CREATE TABLE IF NOT EXISTS checks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         url TEXT NOT NULL,
+        client TEXT,
         checked_at TEXT NOT NULL,
         status_code INTEGER,
         is_up INTEGER,
@@ -24,28 +25,29 @@ def init_db():
         error TEXT
     );
     """)
+
     conn.commit()
     conn.close()
 
 
-def insert_check(url, status_code, is_up, response_time,
-                 ssl_ok, ssl_days_left, error):
+def insert_check(url, client, status_code, is_up, response_time, ssl_ok, ssl_days_left, error):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("""
-        INSERT INTO checks (
-            url, checked_at, status_code, is_up, response_time,
-            ssl_ok, ssl_days_left, error
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        url,
-        datetime.utcnow().isoformat(),
-        status_code,
-        1 if is_up else 0,
-        response_time,
-        None if ssl_ok is None else (1 if ssl_ok else 0),
-        ssl_days_left,
-        error
-    ))
+    INSERT INTO checks (
+        url, client, checked_at, status_code, is_up, response_time,
+        ssl_ok, ssl_days_left, error
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+""", (
+    url,
+    client,
+    datetime.utcnow().isoformat(),
+    status_code,
+    1 if is_up else 0,
+    response_time,
+    None if ssl_ok is None else (1 if ssl_ok else 0),
+    ssl_days_left,
+    error
+))
     conn.commit()
     conn.close()
