@@ -20,7 +20,7 @@ def load_config():
         return json.load(f)
 
 
-def check_single_website(url: str, client: str, ssl_warning_days: int):
+def check_single_website(url: str, client: str, ssl_warning_days: int, email_enabled: bool):
     status_code = None
     response_time = None
     ssl_ok = None
@@ -49,10 +49,11 @@ def check_single_website(url: str, client: str, ssl_warning_days: int):
             # NEW ALERT LOGIC HERE
             if ssl_days_left <= ssl_warning_days:
                 alert_message = f"SSL for {url} expires in {ssl_days_left} days!"
-                print("[ALERT] SSL EXPIRY:", alert_message)
+            print("[ALERT] SSL EXPIRY:", alert_message)
+            if email_enabled:
                 send_email_alert(
-                    subject=f"WebGuard SSL ALERT: {url} expiring soon",
-                    message=alert_message,
+                subject=f"WebGuard SSL ALERT: {url} expiring soon",
+                message=alert_message,
 )
         else:
             ssl_ok = None  # could not determine
@@ -62,11 +63,12 @@ def check_single_website(url: str, client: str, ssl_warning_days: int):
     # Alert for downtime
     if not is_up:
         alert_message = f"{url} is DOWN!\nError: {error}\nStatus: {status_code}"
-        print("[ALERT] Website DOWN!", alert_message)
+    print("[ALERT] WEBSITE DOWN:", alert_message)
+    if email_enabled:
         send_email_alert(
             subject=f"WebGuard ALERT: {url} is DOWN!",
             message=alert_message,
-)
+        )
 
 
 
@@ -88,10 +90,11 @@ def job():
     config = load_config()
     websites = config["websites"]
     ssl_warning_days = config.get("ssl_expiry_warning_days", 14)
+    email_enabled = config.get("email_enabled", True)
+
     print("Running monitoring job...")
 
     for site in websites:
-        # site is expected to be a dict {"url": "...", "client": "..."}
         if isinstance(site, dict):
             url = site.get("url")
             client = site.get("client", "Unknown")
@@ -100,7 +103,7 @@ def job():
             client = "Unknown"
 
         print(f"Checking {url} (Client: {client})...")
-        check_single_website(url, client, ssl_warning_days)
+        check_single_website(url, client, ssl_warning_days, email_enabled)
 
 
 def main():
