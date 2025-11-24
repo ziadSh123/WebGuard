@@ -2,7 +2,7 @@
   "check_interval_minutes": 5,
   "websites": [
     {
-      "url": "https://google.com",
+      "url": "https://google.com/",
       "client": "Google LLC"
     },
     {
