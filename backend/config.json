@@ -10,5 +10,6 @@
       "client": "Gulf Enterprise"
     }
   ],
-  "ssl_expiry_warning_days": 14
+  "ssl_expiry_warning_days": 14,
+  "email_enabled": true
 }
