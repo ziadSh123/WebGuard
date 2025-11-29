@@ -49,11 +49,11 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
             # NEW ALERT LOGIC HERE
             if ssl_days_left <= ssl_warning_days:
                 alert_message = f"SSL for {url} expires in {ssl_days_left} days!"
-            print("[ALERT] SSL EXPIRY:", alert_message)
-            if email_enabled:
-                send_email_alert(
-                subject=f"WebGuard SSL ALERT: {url} expiring soon",
-                message=alert_message,
+                print("[ALERT] SSL EXPIRY:", alert_message)
+                if email_enabled:
+                    send_email_alert(
+                    subject=f"WebGuard SSL ALERT: {url} expiring soon",
+                    message=alert_message,
 )
         else:
             ssl_ok = None  # could not determine
@@ -63,9 +63,9 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
     # Alert for downtime
     if not is_up:
         alert_message = f"{url} is DOWN!\nError: {error}\nStatus: {status_code}"
-    print("[ALERT] WEBSITE DOWN:", alert_message)
-    if email_enabled:
-        send_email_alert(
+        print("[ALERT] WEBSITE DOWN:", alert_message)
+        if email_enabled:
+            send_email_alert(
             subject=f"WebGuard ALERT: {url} is DOWN!",
             message=alert_message,
         )
