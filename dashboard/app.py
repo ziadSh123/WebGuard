@@ -14,8 +14,7 @@ CONFIG_PATH = ROOT / "backend" / "config.json"
 @st.cache_data
 def load_data():
     conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql_query(
-        """
+    df = pd.read_sql_query("""
         SELECT
             id,
             url,
@@ -30,11 +29,10 @@ def load_data():
         FROM checks
         ORDER BY checked_at DESC
         LIMIT 500
-        """,
-        conn,
-    )
+    """, conn)
     conn.close()
     return df
+
 
 
 def load_config():
@@ -160,6 +158,16 @@ def render_settings_page():
         value=config.get("email_enabled", True),
     )
 
+    # Save general settings button
+    if st.button("Save settings"):
+        config["check_interval_minutes"] = int(interval)
+        config["ssl_expiry_warning_days"] = int(ssl_warning)
+        config["email_enabled"] = bool(email_enabled)
+        save_config(config)
+        st.success("Settings saved successfully!")
+        st.rerun()
+
+
     st.markdown("---")
     st.subheader("Websites")
 
@@ -169,7 +177,12 @@ def render_settings_page():
         st.info("No websites configured yet.")
     else:
         st.write("Current websites (URL + client):")
-        st.table(pd.DataFrame(websites))
+
+        df_sites = pd.DataFrame(websites)
+        df_sites = df_sites.rename(columns={"url": "Website URL", "client": "Client"})
+        st.table(df_sites)
+
+
 
     st.markdown("### Add new website")
     new_url = st.text_input("Website URL (https://...)")
@@ -184,8 +197,10 @@ def render_settings_page():
             config["ssl_expiry_warning_days"] = int(ssl_warning)
             config["email_enabled"] = bool(email_enabled)
             save_config(config)
+            st.rerun()   
         else:
             st.error("Please enter both URL and client name.")
+
 
     st.markdown("### Remove website")
     if websites:
@@ -200,6 +215,7 @@ def render_settings_page():
             config["ssl_expiry_warning_days"] = int(ssl_warning)
             config["email_enabled"] = bool(email_enabled)
             save_config(config)
+            st.rerun()
     else:
         st.info("No websites to remove.")
 

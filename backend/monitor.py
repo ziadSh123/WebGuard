@@ -10,7 +10,7 @@ from db import init_db, insert_check
 from ssl_check import get_ssl_expiry_days
 from email_alerts import send_email_alert
 
-from email_alerts import send_email_alert
+
 
 CONFIG_PATH = Path(__file__).parent / "config.json"
 
@@ -48,7 +48,7 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
 
             # NEW ALERT LOGIC HERE
             if ssl_days_left <= ssl_warning_days:
-                alert_message = f"SSL for {url} expires in {ssl_days_left} days!"
+                alert_message = f"Client: {client}\nURL: {url}\nSSL expires in {ssl_days_left} days!"
                 print("[ALERT] SSL EXPIRY:", alert_message)
                 if email_enabled:
                     send_email_alert(
@@ -57,19 +57,26 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
 )
         else:
             ssl_ok = None  # could not determine
+        
 
-            
-
-    # Alert for downtime
+       # Alert for downtime
     if not is_up:
-        alert_message = f"{url} is DOWN!\nError: {error}\nStatus: {status_code}"
-        print("[ALERT] WEBSITE DOWN:", alert_message)
-        if email_enabled:
-            send_email_alert(
-            subject=f"WebGuard ALERT: {url} is DOWN!",
-            message=alert_message,
+        alert_message = (
+            f"Client: {client}\n"
+            f"URL: {url}\n"
+            f"Status: DOWN ❌\n"
+            f"HTTP status: {status_code}\n"
+            f"Error: {error}"
         )
 
+        print("[ALERT] WEBSITE DOWN:", alert_message)
+
+        if email_enabled:
+            send_email_alert(
+                subject=f"WebGuard ALERT: {client}: {url} is DOWN!",
+                message=alert_message,
+            )
+       
 
 
     # Save to DB
