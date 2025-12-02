@@ -1,15 +1,19 @@
 {
-  "check_interval_minutes": 1,
+  "check_interval_minutes": 5,
   "websites": [
     {
       "url": "https://google.com/",
       "client": "Google LLC"
     },
     {
-      "url": "https://www.microsoft.com",
-      "client": "Microsoft"
+      "url": "https://www.youtube.com/",
+      "client": "YouTube"
+    },
+    {
+      "url": "https://www.polytechnic.bh/",
+      "client": "Polytechnic"
     }
   ],
-  "ssl_expiry_warning_days": 20,
+  "ssl_expiry_warning_days": 15,
   "email_enabled": true
 }
