@@ -1,5 +1,5 @@
 {
-  "check_interval_minutes": 5,
+  "check_interval_minutes": 1,
   "websites": [
     {
       "url": "https://google.com/",
@@ -10,10 +10,23 @@
       "client": "YouTube"
     },
     {
-      "url": "https://www.polytechnic.bh/",
-      "client": "Polytechnic"
+      "url": "https://fake-domain-for-test-12345.com",
+      "client": "Demo client"
+    },
+    {
+      "url": "https://www.uob.edu.bh/?lang=ar",
+      "client": "UOB"
+    },
+    {
+      "url": "https://selfservice.polytechnic.bh/",
+      "client": "SSB-polytechnic"
+    },
+    {
+      "url": "https://moodle.polytechnic.bh/moodle/admin/tool/dataprivacy/summary.php",
+      "client": "SSB-polytechnic"
     }
   ],
-  "ssl_expiry_warning_days": 15,
-  "email_enabled": true
+  "ssl_expiry_warning_days": 21,
+  "email_enabled": false,
+  "alert_email": "202100376@stu.uob.edu.bh"
 }

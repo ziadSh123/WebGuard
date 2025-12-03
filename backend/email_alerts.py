@@ -1,38 +1,46 @@
 import os
+from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from dotenv import load_dotenv
 
-# Load variables from .env
 load_dotenv()
 
 
-def send_email_alert(subject: str, message: str):
+def send_email_alert(subject: str, message: str, receiver_email: str | None = None):
     """
-    Sends an email alert using Gmail SMTP and credentials from .env.
-    """
+    Send an email alert.
 
+    receiver_email:
+      - if provided, use this (user from Streamlit)
+      - if None, fall back to RECEIVER_EMAIL from .env (for testing / default)
+    """
     sender = os.getenv("SENDER_EMAIL")
     password = os.getenv("SENDER_PASSWORD")
-    receiver = os.getenv("RECEIVER_EMAIL")
 
-    if not sender or not password or not receiver:
-        print("[EMAIL] Missing SENDER_EMAIL / SENDER_PASSWORD / RECEIVER_EMAIL in .env. Skipping email.")
+    # Fallback receiver from .env if not passed
+    if receiver_email is None:
+        receiver_email = os.getenv("RECEIVER_EMAIL")
+
+    if not sender or not password:
+        print("[EMAIL ERROR] Sender credentials not configured.")
+        return
+
+    if not receiver_email:
+        print("[EMAIL] No receiver email configured, skipping.")
         return
 
     msg = MIMEMultipart()
     msg["From"] = sender
-    msg["To"] = receiver
+    msg["To"] = receiver_email
     msg["Subject"] = subject
     msg.attach(MIMEText(message, "plain"))
 
     try:
-        # Gmail SMTP
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(sender, password)
-        server.sendmail(sender, receiver, msg.as_string())
+        server.sendmail(sender, receiver_email, msg.as_string())
         server.quit()
         print("[EMAIL SENT]")
     except Exception as e:

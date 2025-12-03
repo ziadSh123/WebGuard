@@ -20,7 +20,14 @@ def load_config():
         return json.load(f)
 
 
-def check_single_website(url: str, client: str, ssl_warning_days: int, email_enabled: bool):
+def check_single_website(
+    url: str,
+    client: str,
+    ssl_warning_days: int,
+    email_enabled: bool,
+    alert_email: str | None,
+):
+
     status_code = None
     response_time = None
     ssl_ok = None
@@ -34,8 +41,9 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
         status_code = response.status_code
         response_time = response.elapsed.total_seconds()
         is_up = 200 <= status_code < 400
-    except Exception as e:
-        error = f"Request error: {e}"
+    except Exception:
+        error = "Request failed (domain unreachable)"
+
 
    # 2) SSL check (https only)
     parsed = urlparse(url)
@@ -52,9 +60,11 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
                 print("[ALERT] SSL EXPIRY:", alert_message)
                 if email_enabled:
                     send_email_alert(
-                    subject=f"WebGuard SSL ALERT: {url} expiring soon",
-                    message=alert_message,
-)
+                        subject=f"WebGuard SSL ALERT: {url} expiring soon",
+                        message=alert_message,
+                        receiver_email=alert_email,
+                    )
+
         else:
             ssl_ok = None  # could not determine
         
@@ -75,7 +85,9 @@ def check_single_website(url: str, client: str, ssl_warning_days: int, email_ena
             send_email_alert(
                 subject=f"WebGuard ALERT: {client}: {url} is DOWN!",
                 message=alert_message,
+                receiver_email=alert_email,
             )
+
        
 
 
@@ -98,6 +110,8 @@ def job():
     websites = config["websites"]
     ssl_warning_days = config.get("ssl_expiry_warning_days", 14)
     email_enabled = config.get("email_enabled", True)
+    alert_email = config.get("alert_email")  # NEW
+
 
     print("Running monitoring job...")
 
@@ -110,7 +124,7 @@ def job():
             client = "Unknown"
 
         print(f"Checking {url} (Client: {client})...")
-        check_single_website(url, client, ssl_warning_days, email_enabled)
+        check_single_website(url, client, ssl_warning_days, email_enabled, alert_email)
 
 
 def main():

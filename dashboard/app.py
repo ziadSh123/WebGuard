@@ -187,13 +187,22 @@ def render_settings_page():
         value=config.get("email_enabled", True),
     )
 
+    alert_email = config.get("alert_email", "")
+    alert_email_input = st.text_input(
+        "Alert email (this address will receive WebGuard notifications)",
+        value=alert_email,
+    )
+
+
     if st.button("Save settings"):
         config["check_interval_minutes"] = int(interval)
         config["ssl_expiry_warning_days"] = int(ssl_warning)
         config["email_enabled"] = bool(email_enabled)
+        config["alert_email"] = alert_email_input.strip()
         save_config(config)
-        st.cache_data.clear()
+        st.success("Settings saved successfully!")
         st.rerun()
+
 
     st.markdown("---")
     st.subheader("Websites")
