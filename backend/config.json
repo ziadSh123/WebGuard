@@ -1,5 +1,5 @@
 {
-  "check_interval_minutes": 1,
+  "check_interval_minutes": 5,
   "websites": [
     {
       "url": "https://google.com/",
@@ -26,7 +26,7 @@
       "client": "SSB-polytechnic"
     }
   ],
-  "ssl_expiry_warning_days": 21,
-  "email_enabled": false,
-  "alert_email": "202100376@stu.uob.edu.bh"
+  "ssl_expiry_warning_days": 12,
+  "email_enabled": true,
+  "alert_email": ""
 }
