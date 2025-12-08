@@ -24,6 +24,14 @@
     {
       "url": "https://moodle.polytechnic.bh/moodle/admin/tool/dataprivacy/summary.php",
       "client": "SSB-polytechnic"
+    },
+    {
+      "url": "https://alothman.cc/",
+      "client": "AlOthman"
+    },
+    {
+      "url": "https://ar.aliexpress.com/?gad_source=1&gatewayAdapt=glo2ara",
+      "client": "Ali Express"
     }
   ],
   "ssl_expiry_warning_days": 21,

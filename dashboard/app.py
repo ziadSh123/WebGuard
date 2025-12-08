@@ -352,12 +352,13 @@ def render_settings_page():
 
     config = load_config()
 
-    # General settings card
+    # ───────────── General Settings ─────────────
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">General Settings</div>', unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
+    # Check interval (same width as Website URL row)
+    col_interval, _ = st.columns([0.33, 0.67])
+    with col_interval:
         interval = st.number_input(
             "Check interval (minutes)",
             min_value=1,
@@ -366,6 +367,9 @@ def render_settings_page():
             step=1,
         )
 
+    # SSL expiry warning (same width)
+    col_ssl, _ = st.columns([0.33, 0.67])
+    with col_ssl:
         ssl_warning = st.number_input(
             "SSL expiry warning (days)",
             min_value=1,
@@ -374,15 +378,22 @@ def render_settings_page():
             step=1,
         )
 
-    with col2:
-        email_enabled = st.checkbox(
-            "Enable email alerts",
-            value=config.get("email_enabled", True),
-        )
+    # Alert email (same width) + Enable email alerts aligned to the right
+    col_email, col_enable = st.columns([0.33, 0.67])
+
+    with col_email:
         alert_email = config.get("alert_email", "")
         alert_email_input = st.text_input(
             "Alert email (this address will receive WebGuard notifications)",
             value=alert_email,
+        )
+
+    with col_enable:
+        # vertical spacer so checkbox lines up with the input box
+        st.markdown("<div style='height: 32px;'></div>", unsafe_allow_html=True)
+        email_enabled = st.checkbox(
+            "Enable email alerts",
+            value=config.get("email_enabled", True),
         )
 
     if st.button("💾 Save settings"):
@@ -395,7 +406,7 @@ def render_settings_page():
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Websites card
+    # ───────────── Websites Section ─────────────
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Websites</div>', unsafe_allow_html=True)
 
@@ -411,10 +422,16 @@ def render_settings_page():
 
     spacer()
 
-    # Add website
+    # ---- Add website (inputs are 1/3 of the row) ----
     st.markdown("**Add new website**")
-    new_url = st.text_input("Website URL (https://...)")
-    new_client = st.text_input("Client name")
+
+    col_url, _, _ = st.columns([0.33, 0.33, 0.34])
+    with col_url:
+        new_url = st.text_input("Website URL (https://...)", key="add_url")
+
+    col_client, _, _ = st.columns([0.33, 0.33, 0.34])
+    with col_client:
+        new_client = st.text_input("Client name", key="add_client")
 
     if st.button("➕ Add website"):
         if new_url.strip() and new_client.strip():
@@ -423,6 +440,7 @@ def render_settings_page():
             config["check_interval_minutes"] = int(interval)
             config["ssl_expiry_warning_days"] = int(ssl_warning)
             config["email_enabled"] = bool(email_enabled)
+            config["alert_email"] = alert_email_input.strip()
             save_config(config)
             st.cache_data.clear()
             st.rerun()
@@ -431,12 +449,16 @@ def render_settings_page():
 
     spacer()
 
-    # Remove website
+    # ---- Remove website (selectbox is 1/3 of the row) ----
     st.markdown("**Remove website**")
 
     if websites:
-        options = [f"{w['client']} – {w['url']}" for w in websites]
-        to_remove = st.selectbox("Select website to remove", options)
+        col_sel, _, _ = st.columns([0.33, 0.33, 0.34])
+        with col_sel:
+            options = [f"{w['client']} – {w['url']}" for w in websites]
+            to_remove = st.selectbox(
+                "Select website to remove", options, key="remove_select"
+            )
 
         if st.button("🗑️ Remove selected website"):
             idx = options.index(to_remove)
@@ -445,6 +467,7 @@ def render_settings_page():
             config["check_interval_minutes"] = int(interval)
             config["ssl_expiry_warning_days"] = int(ssl_warning)
             config["email_enabled"] = bool(email_enabled)
+            config["alert_email"] = alert_email_input.strip()
             save_config(config)
             st.cache_data.clear()
             st.rerun()
