@@ -122,6 +122,100 @@ st.markdown(
     .wg-sub{ margin-top:4px; font-size:0.95rem; color:#e5e7eb; opacity:0.95; word-break: break-word; }
     .wg-sub a { color: #60a5fa; text-decoration: none; }
     .wg-sub a:hover { text-decoration: underline; }
+
+label[data-testid="stWidgetLabel"] > div {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Number input labels */
+div[data-testid="stNumberInput"] label > div {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Text input labels */
+div[data-testid="stTextInput"] label > div {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Selectbox labels */
+div[data-testid="stSelectbox"] label > div {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Checkbox text */
+div[data-testid="stCheckbox"] label span {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* ===== TABLES / DATAFRAMES TO WHITE ===== */
+
+/* st.table */
+table {
+    color: #ffffff !important;
+}
+
+/* table headers */
+thead tr th {
+    color: #ffffff !important;
+    background-color: rgba(255,255,255,0.05) !important;
+}
+
+/* table cells */
+tbody tr td {
+    color: #ffffff !important;
+}
+
+/* st.dataframe (AG Grid / Arrow table) */
+div[data-testid="stDataFrame"] * {
+    color: #ffffff !important;
+}
+
+/* dataframe header */
+div[data-testid="stDataFrame"] th {
+    background-color: rgba(255,255,255,0.06) !important;
+}
+
+/* dataframe rows */
+div[data-testid="stDataFrame"] td {
+    background-color: transparent !important;
+}
+
+/* ===== TABLE INDEX (ROW NUMBERS) ===== */
+tbody tr th,
+tbody tr th span {
+    color: #ffffff !important;
+}
+
+/* ===== WHITE BORDER AROUND TABLE ===== */
+
+/* st.table */
+table {
+    border: 1px solid rgba(255,255,255,0.35) !important;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* st.dataframe container */
+div[data-testid="stDataFrame"] {
+    border: 1px solid rgba(255,255,255,0.35) !important;
+    border-radius: 10px;
+    padding: 6px;
+}
+
+/* header bottom border */
+thead tr {
+    border-bottom: 1px solid rgba(255,255,255,0.25) !important;
+}
+
+/* row separators */
+tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
     </style>
     """,
     unsafe_allow_html=True,
@@ -338,17 +432,13 @@ def render_monitor_page():
     active_urls = _active_urls_from_config(config)
 
     if not active_urls:
-        st.warning("No active websites configured. Add websites in Settings.")
+        st.warning("No active websites configured. Add websites in Settings.") 
         return
 
     df = df[df["url"].isin(active_urls)]
     if df.empty:
         st.warning("No data yet for these websites. Make sure the monitor is running.")
         return
-
-    # Scope
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Scope</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
     with col1:
@@ -802,7 +892,6 @@ def main():
         render_settings_page()
     else:
         render_reports_page()
-
 
 if __name__ == "__main__":
     main()
