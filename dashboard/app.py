@@ -5,7 +5,10 @@ import sqlite3
 import pandas as pd
 import streamlit as st
 
-
+import hashlib
+import socket
+from urllib.parse import urlparse
+import requests
 # ───────────────────── PAGE CONFIG & THEME ─────────────────────
 
 st.set_page_config(
@@ -185,6 +188,131 @@ def _active_urls_from_config(cfg: dict) -> list[str]:
             active.append(w)
     return active
 
+def _domain_from_url(url: str) -> str:
+    try:
+        return (urlparse(url).hostname or "").lower()
+    except Exception:
+        return ""
+
+def _dns_check(domain: str):
+    """
+    Returns: (dns_ok: bool, ip_or_error: str)
+    """
+    if not domain:
+        return False, "No domain"
+    try:
+        # gethostbyname_ex -> (hostname, aliaslist, ipaddrlist)
+        _, _, ips = socket.gethostbyname_ex(domain)
+        if ips:
+            return True, ", ".join(ips[:3])  # show up to 3 IPs
+        return False, "No IPs"
+    except Exception as e:
+        return False, str(e)
+
+def _score_url_reputation(url: str) -> str:
+    """
+    Simple offline heuristic (no API key).
+    Output: "Safe" | "Risky" | "Malicious"
+    """
+    u = (url or "").strip().lower()
+    domain = _domain_from_url(u)
+
+    if not u or not domain:
+        return "Risky"
+
+    score = 0
+
+    # basic suspicious patterns
+    if "@" in u:
+        score += 3
+    if u.startswith("http://"):
+        score += 2
+    if "xn--" in domain:  # punycode often used in phishing
+        score += 2
+    if len(domain) > 35:
+        score += 1
+    if domain.count("-") >= 4:
+        score += 1
+
+    # suspicious TLDs (very lightweight)
+    suspicious_tlds = (".zip", ".mov", ".click", ".top", ".xyz", ".tk", ".gq", ".cf")
+    if domain.endswith(suspicious_tlds):
+        score += 2
+
+    # lots of subdomains sometimes suspicious
+    if domain.count(".") >= 4:
+        score += 1
+
+    # classify
+    if score >= 6:
+        return "Malicious"
+    if score >= 3:
+        return "Risky"
+    return "Safe"
+
+def _ensure_content_table(conn: sqlite3.Connection):
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS content_state (
+            url TEXT PRIMARY KEY,
+            last_hash TEXT,
+            last_checked_at TEXT,
+            last_changed_at TEXT
+        )
+    """)
+    conn.commit()
+
+def _content_change_check(db_path: Path, url: str, timeout_s: int = 8):
+    """
+    Fetches page, hashes body, stores hash in SQLite.
+    Returns: (state: str, info: str)
+      state: "Changed" | "No change" | "Unavailable"
+    """
+    if not url:
+        return "Unavailable", "No URL"
+
+    try:
+        r = requests.get(url, timeout=timeout_s, headers={"User-Agent": "WebGuard/1.0"})
+        body = (r.text or "").encode("utf-8", errors="ignore")
+        content_hash = hashlib.sha256(body).hexdigest()
+    except Exception as e:
+        return "Unavailable", str(e)
+
+    conn = sqlite3.connect(db_path)
+    _ensure_content_table(conn)
+
+    row = conn.execute(
+        "SELECT last_hash FROM content_state WHERE url = ?",
+        (url,),
+    ).fetchone()
+
+    now = pd.Timestamp.utcnow().isoformat()
+
+    if row is None:
+        conn.execute(
+            "INSERT INTO content_state(url, last_hash, last_checked_at, last_changed_at) VALUES(?,?,?,?)",
+            (url, content_hash, now, now),
+        )
+        conn.commit()
+        conn.close()
+        return "No change", "Baseline saved"
+
+    last_hash = row[0] or ""
+    if last_hash != content_hash:
+        conn.execute(
+            "UPDATE content_state SET last_hash=?, last_checked_at=?, last_changed_at=? WHERE url=?",
+            (content_hash, now, now, url),
+        )
+        conn.commit()
+        conn.close()
+        return "Changed", "Content updated"
+    else:
+        conn.execute(
+            "UPDATE content_state SET last_checked_at=? WHERE url=?",
+            (now, url),
+        )
+        conn.commit()
+        conn.close()
+        return "No change", "No update"
 
 # ───────────────────── MONITOR PAGE ─────────────────────
 
@@ -238,18 +366,19 @@ def render_monitor_page():
     filtered = df_client[df_client["url"] == selected_url].sort_values("checked_at")
     latest = filtered.iloc[-1]
 
-    # Current Status (PRO CARDS 3 + 3)
+    # Current Status (PRO CARDS)
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown(
         f'<div class="section-title">Current Status<span class="pill">{selected_client}</span></div>',
         unsafe_allow_html=True,
     )
 
+    # Existing stats
     status_label = "UP" if int(latest["is_up"]) == 1 else "DOWN"
     status_icon = "✅" if int(latest["is_up"]) == 1 else "❌"
 
     ssl_state = latest["ssl_ok"]
-    if pd.notna(ssl_state) and int(ssl_state) == 1:
+    if pd.notna(ssl_state) and int(ssl_state) == 1 and pd.notna(latest["ssl_days_left"]):
         ssl_label = f"{int(latest['ssl_days_left'])} days"
     elif pd.notna(ssl_state) and int(ssl_state) == 0:
         ssl_label = "Problem"
@@ -259,6 +388,20 @@ def render_monitor_page():
     rt = float(latest["response_time"]) if pd.notna(latest["response_time"]) else 0.0
     code = int(latest["status_code"]) if pd.notna(latest["status_code"]) else 0
     last_checked = str(latest["checked_at"])
+
+    # ───── NEW FEATURES ─────
+    domain = _domain_from_url(selected_url)
+    dns_ok, dns_info = _dns_check(domain)
+    dns_label = "Resolved ✅" if dns_ok else "Failed ❌"
+
+    # ✅ FIXED: use the function you actually defined
+    rep = _score_url_reputation(selected_url)
+    rep_icon = "✅" if rep == "Safe" else ("⚠️" if rep == "Risky" else "❌")
+    rep_label = f"{rep} {rep_icon}"
+
+    content_state, content_info = _content_change_check(DB_PATH, selected_url)
+    content_icon = "🔔" if content_state == "Changed" else ("📝" if content_state == "No change" else "❓")
+    content_label = f"{content_state} {content_icon}"
 
     st.markdown(
         f"""
@@ -287,6 +430,22 @@ def render_monitor_page():
           <div class="wg-card">
             <div class="wg-top"><div class="wg-ico">🌐</div><div class="wg-label">Website</div></div>
             <div class="wg-sub"><a href="{selected_url}" target="_blank">{selected_url}</a></div>
+          </div>
+
+          <div class="wg-card">
+            <div class="wg-top"><div class="wg-ico">📡</div><div class="wg-label">DNS Monitoring</div></div>
+            <div class="wg-value">{dns_label}</div>
+            <div class="wg-sub">{domain} • {dns_info}</div>
+          </div>
+          <div class="wg-card">
+            <div class="wg-top"><div class="wg-ico">🧠</div><div class="wg-label">URL Reputation</div></div>
+            <div class="wg-value">{rep_label}</div>
+            <div class="wg-sub">Heuristic (offline)</div>
+          </div>
+          <div class="wg-card">
+            <div class="wg-top"><div class="wg-ico">📄</div><div class="wg-label">Content Change</div></div>
+            <div class="wg-value">{content_label}</div>
+            <div class="wg-sub">{content_info}</div>
           </div>
         </div>
         """,
@@ -340,11 +499,11 @@ def render_monitor_page():
 
     with r2c2:
         st.markdown("**Recent Checks**")
-        # Align table with chart by adding a small placeholder line like the uptime summary
         st.write("&nbsp;", unsafe_allow_html=True)
         st.dataframe(filtered.tail(50), height=280, width="stretch")
 
     st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 # ───────────────────── SETTINGS PAGE ─────────────────────

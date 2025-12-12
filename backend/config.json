@@ -32,6 +32,10 @@
     {
       "url": "https://ar.aliexpress.com/?gad_source=1&gatewayAdapt=glo2ara",
       "client": "Ali Express"
+    },
+    {
+      "url": "https://P@ypal.com/",
+      "client": "Paypal"
     }
   ],
   "ssl_expiry_warning_days": 12,
