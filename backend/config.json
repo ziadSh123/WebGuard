@@ -36,6 +36,10 @@
     {
       "url": "https://P@ypal.com/",
       "client": "Paypal"
+    },
+    {
+      "url": "https://inkandcollectables.com/",
+      "client": "Salman Website"
     }
   ],
   "ssl_expiry_warning_days": 67,
