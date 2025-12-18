@@ -38,7 +38,7 @@
       "client": "Paypal"
     }
   ],
-  "ssl_expiry_warning_days": 12,
+  "ssl_expiry_warning_days": 67,
   "email_enabled": true,
-  "alert_email": ""
+  "alert_email": "Othmankha@gmail.com"
 }
