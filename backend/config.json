@@ -42,7 +42,7 @@
       "client": "Salman Website"
     }
   ],
-  "ssl_expiry_warning_days": 67,
-  "email_enabled": true,
+  "ssl_expiry_warning_days": 14,
+  "email_enabled": false,
   "alert_email": "Othmankha@gmail.com"
 }
