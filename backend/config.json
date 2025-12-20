@@ -1,5 +1,5 @@
 {
-  "check_interval_minutes": 1,
+  "check_interval_minutes": 5,
   "websites": [
     {
       "url": "https://google.com/",
@@ -42,7 +42,59 @@
       "client": "Salman Website"
     }
   ],
-  "ssl_expiry_warning_days": 14,
-  "email_enabled": false,
-  "alert_email": "Othmankha@gmail.com"
+  "ssl_expiry_warning_days": 15,
+  "email_enabled": true,
+  "alert_email": "ziad.sh.3010@gmail.com",
+  "monitoring_state": {
+    "https://google.com/": {
+      "content_hash": "4d8339f08f734f8771631e00b8412a2991c2489596e245bf439bb7713fb76aa5",
+      "avg_response_time": 0.672502,
+      "incidents_count": 2
+    },
+    "https://www.youtube.com/": {
+      "content_hash": "49fe166266da8cfd4f9f9d1d615f4952d49e60e1632360c9d32137463a82960e",
+      "avg_response_time": 0.674515,
+      "incidents_count": 2
+    },
+    "https://fake-domain-for-test-12345.com": {
+      "content_hash": null,
+      "avg_response_time": null,
+      "incidents_count": 4
+    },
+    "https://www.uob.edu.bh/?lang=ar": {
+      "content_hash": "5fc910392d1d2c285d870910f5af4782cf8eeebe25e1a91c528a2db2044f56ef",
+      "avg_response_time": 2.162087,
+      "incidents_count": 3
+    },
+    "https://selfservice.polytechnic.bh/": {
+      "content_hash": "8beaf045159a7625f73a580f084c7a60685f65bec435730e909c3d7de502cc33",
+      "avg_response_time": 0.463262,
+      "incidents_count": 2
+    },
+    "https://moodle.polytechnic.bh/moodle/admin/tool/dataprivacy/summary.php": {
+      "content_hash": "ec3b612aae85b70c863626c51ffe2efb0b1d648a99f77ffa7150e26dbee296c1",
+      "avg_response_time": 0.371535,
+      "incidents_count": 3
+    },
+    "https://alothman.cc/": {
+      "content_hash": "fd1dd9be859cdc00de8b84698460506f71772484e534757245a456ef367344b3",
+      "avg_response_time": 0.76303,
+      "incidents_count": 3
+    },
+    "https://ar.aliexpress.com/?gad_source=1&gatewayAdapt=glo2ara": {
+      "content_hash": "9c0323f2693e64c0995b6ed9e04bb70d81231df6198392b26099102d9d5981c2",
+      "avg_response_time": 1.619298,
+      "incidents_count": 3
+    },
+    "https://P@ypal.com/": {
+      "content_hash": "896926df98a41bba8ddf358dfffc7e99b13736ffca62f51841cc6af7a677a0dd",
+      "avg_response_time": 0.439897,
+      "incidents_count": 3
+    },
+    "https://inkandcollectables.com/": {
+      "content_hash": "ad93474d1340336ecdfda2d82832ca6b314ae4eb3c5a38b640bb4bdd05d348ad",
+      "avg_response_time": 1.799997,
+      "incidents_count": 4
+    }
+  }
 }
