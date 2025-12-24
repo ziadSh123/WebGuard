@@ -42,7 +42,64 @@
       "client": "Salman Website"
     }
   ],
-  "ssl_expiry_warning_days": 67,
-  "email_enabled": true,
-  "alert_email": "Othmankha@gmail.com"
+  "ssl_expiry_warning_days": 15,
+  "email_enabled": false,
+  "alert_email": "ziad.sh.3010@gmail.com",
+  "monitoring_state": {
+    "https://google.com/": {
+      "content_hash": "70e3a5a423efe3fbb7b8989b5074627b2ee6e2175f051b5ddc3f91bda34c3406",
+      "avg_response_time": 0.884099,
+      "incidents_count": 2
+    },
+    "https://www.youtube.com/": {
+      "content_hash": "256b5d267c2f389e19b8fc117d091ce222f43329614b60481ee9f1e21c4035ed",
+      "avg_response_time": 0.820085,
+      "incidents_count": 2
+    },
+    "https://fake-domain-for-test-12345.com": {
+      "content_hash": null,
+      "avg_response_time": null,
+      "incidents_count": 4
+    },
+    "https://www.uob.edu.bh/?lang=ar": {
+      "content_hash": "ce32f716945a0a22d35b63d76767dde4b1495c93ed568a2ee37b857793c525e8",
+      "avg_response_time": 2.235748,
+      "incidents_count": 3
+    },
+    "https://selfservice.polytechnic.bh/": {
+      "content_hash": "8beaf045159a7625f73a580f084c7a60685f65bec435730e909c3d7de502cc33",
+      "avg_response_time": 0.669672,
+      "incidents_count": 2
+    },
+    "https://moodle.polytechnic.bh/moodle/admin/tool/dataprivacy/summary.php": {
+      "content_hash": "eb90c0a7f957dbebe9c64c646002670f1abf17074e897f4e87290b8349c1916b",
+      "avg_response_time": 0.555987,
+      "incidents_count": 3
+    },
+    "https://alothman.cc/": {
+      "content_hash": "fd1dd9be859cdc00de8b84698460506f71772484e534757245a456ef367344b3",
+      "avg_response_time": 1.098112,
+      "incidents_count": 3
+    },
+    "https://ar.aliexpress.com/?gad_source=1&gatewayAdapt=glo2ara": {
+      "content_hash": "6ab54b90ee64e254c6dc95d04fd40e65a1c33d047b833b8c23363b393ef9f9c0",
+      "avg_response_time": 1.999009,
+      "incidents_count": 3
+    },
+    "https://P@ypal.com/": {
+      "content_hash": "cd819f0e6b1ca3f5c45851f83c24f96e902d8708b3f49a73bff9706e3f75a243",
+      "avg_response_time": 0.565822,
+      "incidents_count": 3
+    },
+    "https://inkandcollectables.com/": {
+      "content_hash": "de5d799d060336420d7ee1d4a8aa4abcbef3ccb7e8ffd1b1e0df84a6bd535f08",
+      "avg_response_time": 1.700675,
+      "incidents_count": 4
+    },
+    "www.hypixel.net": {
+      "content_hash": null,
+      "avg_response_time": null,
+      "incidents_count": 2
+    }
+  }
 }

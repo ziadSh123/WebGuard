@@ -21,22 +21,7 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Overall background */
-    [data-testid="stAppViewContainer"] {
-        background: #0b1020;
-        color: #f5f5f5;
-    }
-
-    /* Hide sidebar completely (we use top navbar now) */
-    section[data-testid="stSidebar"] { display: none !important; }
-    [data-testid="collapsedControl"] { display: none !important; }
-
-    /* Top header & toolbar */
-    [data-testid="stHeader"], [data-testid="stToolbar"] {
-        background: #0b1020;
-    }
-
-    /* ────────── ANIMATIONS ────────── */
+    /* ═══════════════ GLOBAL ANIMATIONS ═══════════════ */
     @keyframes gradient {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -62,7 +47,7 @@ st.markdown(
     @keyframes slideInRight {
         from {
             opacity: 0;
-            transform: translateX(-20px);
+            transform: translateX(-30px);
         }
         to {
             opacity: 1;
@@ -72,7 +57,7 @@ st.markdown(
     
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        50% { transform: translateY(-20px); }
     }
     
     @keyframes pulse {
@@ -95,106 +80,119 @@ st.markdown(
             transform: scale(1);
         }
     }
-
-    /* Animated background */
-    .wg-animated-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(-45deg, #0b1020, #1a1f3a, #16a34a, #0f172a);
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
-        opacity: 0.15;
-        z-index: -1;
+    
+    /* Overall background */
+    [data-testid="stAppViewContainer"] {
+        background: #0b1020;
+        color: #f5f5f5;
+        animation: fadeIn 0.5s ease-out;
     }
+
+    /* Hide sidebar completely (we use top navbar now) */
+    section[data-testid="stSidebar"] { display: none !important; }
+    [data-testid="collapsedControl"] { display: none !important; }
+
+    /* Top header & toolbar */
+    [data-testid="stHeader"], [data-testid="stToolbar"] {
+        background: #0b1020;
+    }
+    
+    /* HIDE ALL STREAMLIT BRANDING - COMPLETE REMOVAL */
+    [data-testid="stStatusWidget"] { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
+    button[kind="header"] { display: none !important; }
+    header[data-testid="stHeader"] > div:first-child { display: none !important; }
+    .css-18ni7ap { display: none !important; }
+    .css-vk3wp9 { display: none !important; }
+    div[data-testid="stStatusWidget"] { display: none !important; }
+    div[data-testid="stDecoration"] { display: none !important; }
+    .stDeployButton { display: none !important; }
+    #MainMenu { visibility: hidden !important; }
+    footer { visibility: hidden !important; }
+    header { visibility: hidden !important; }
 
     /* Titles */
     .big-title {
-        font-size: 2.8rem;
-        font-weight: 900;
+        font-size: 2.3rem;
+        font-weight: 800;
         margin-bottom: 0.25rem;
-        background: linear-gradient(135deg, #ffffff 0%, #16a34a 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #f9fafb;
         animation: fadeInUp 0.6s ease-out;
-        letter-spacing: -1px;
     }
     .subtitle {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
         color: #9ca3af;
-        margin-bottom: 2rem;
-        animation: fadeInUp 0.6s ease-out 0.1s both;
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 0.8s ease-out;
     }
 
     /* Section wrappers */
     .section-card {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 16px;
-        padding: 24px;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-        animation: fadeInUp 0.5s ease-out;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        transition: all 0.3s ease;
-    }
-    .section-card:hover {
-        border-color: rgba(22,163,74,0.3);
-        box-shadow: 0 12px 40px rgba(22,163,74,0.15);
+        background: transparent;
+        border-radius: 0;
+        padding: 0;
+        margin-top: 0.4rem;
+        border: none;
+        animation: fadeInUp 0.6s ease-out;
     }
     .section-title {
-        font-size: 1.3rem;
-        font-weight: 800;
-        margin-bottom: 1.25rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
         color: #f9fafb;
-        position: relative;
-        padding-left: 16px;
-    }
-    .section-title::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 24px;
-        background: linear-gradient(135deg, #16a34a, #22c55e);
-        border-radius: 2px;
     }
 
     /* Pills */
     .pill {
         display: inline-block;
-        padding: 0.15rem 0.75rem;
+        padding: 0.12rem 0.6rem;
         border-radius: 999px;
-        background: rgba(37, 99, 235, 0.15);
+        background: rgba(37, 99, 235, 0.12);
         color: #93c5fd;
-        font-size: 0.8rem;
-        margin-left: 0.6rem;
-        border: 1px solid rgba(37, 99, 235, 0.3);
-        animation: fadeIn 0.4s ease-out;
+        font-size: 0.78rem;
+        margin-left: 0.4rem;
+        transition: all 0.3s ease;
+    }
+    
+    .pill:hover {
+        background: rgba(37, 99, 235, 0.2);
+        transform: scale(1.05);
     }
 
     /* DEFAULT buttons (keep your main action buttons green) */
     .stDownloadButton > button, .stButton > button[kind="primary"] {
         border-radius: 999px !important;
         border: 1px solid #16a34a !important;
-        background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+        background: #16a34a !important;
         color: white !important;
         font-weight: 800 !important;
-        padding: 0.5rem 1.2rem !important;
+        padding: 0.35rem 0.9rem !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 12px rgba(22,163,74,0.3) !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
+    
+    .stDownloadButton > button::before, .stButton > button[kind="primary"]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .stDownloadButton > button:hover::before, .stButton > button[kind="primary"]:hover::before {
+        left: 100%;
+    }
+    
     .stButton > button[kind="primary"]:hover, .stDownloadButton > button:hover {
         border-color: #22c55e !important;
-        background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+        background: #22c55e !important;
+        color: #0b1020 !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(22,163,74,0.4) !important;
+        box-shadow: 0 8px 20px rgba(22,163,74,0.3) !important;
     }
 
     /* NAV buttons (secondary) = dark by default */
@@ -208,10 +206,10 @@ st.markdown(
         transition: all 0.3s ease !important;
     }
     .stButton > button[kind="secondary"]:hover {
-        background: rgba(255,255,255,0.08) !important;
-        border-color: rgba(255,255,255,0.20) !important;
+        background: rgba(255,255,255,0.07) !important;
+        border-color: rgba(255,255,255,0.18) !important;
         color: #ffffff !important;
-        transform: translateY(-2px) !important;
+        transform: translateY(-1px) !important;
     }
 
     /* Active nav pill (selected = green) */
@@ -221,11 +219,11 @@ st.markdown(
         text-align:center;
         padding: 10px 18px;
         border-radius: 999px;
-        background: linear-gradient(135deg, #16a34a, #22c55e);
+        background: #16a34a;
         border: 1px solid #16a34a;
         color: #ffffff;
         font-weight: 1000;
-        box-shadow: 0 4px 16px rgba(22,163,74,0.4);
+        box-shadow: 0 4px 12px rgba(22,163,74,0.3);
         animation: scaleIn 0.3s ease-out;
     }
 
@@ -233,22 +231,23 @@ st.markdown(
     .wg-grid{
       display:grid;
       grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:20px;
-      margin-top:20px;
-      margin-bottom:20px;
+      gap:16px;
+      margin-top:10px;
+      margin-bottom:10px;
     }
     .wg-card{
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 16px;
-      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 16px;
       box-shadow: 0 8px 26px rgba(0,0,0,0.25);
-      min-height: 100px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 84px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInUp 0.5s ease-out backwards;
       position: relative;
       overflow: hidden;
-      animation: fadeInUp 0.5s ease-out;
     }
+    
     .wg-card::before {
         content: '';
         position: absolute;
@@ -258,16 +257,19 @@ st.markdown(
         height: 100%;
         background: linear-gradient(135deg, rgba(22,163,74,0.05) 0%, transparent 100%);
         opacity: 0;
-        transition: opacity 0.4s ease;
+        transition: opacity 0.3s ease;
     }
+    
     .wg-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(22,163,74,0.4);
-        box-shadow: 0 16px 40px rgba(22,163,74,0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+        border-color: rgba(22,163,74,0.3);
     }
+    
     .wg-card:hover::before {
         opacity: 1;
     }
+    
     .wg-card:nth-child(1) { animation-delay: 0.05s; }
     .wg-card:nth-child(2) { animation-delay: 0.1s; }
     .wg-card:nth-child(3) { animation-delay: 0.15s; }
@@ -281,33 +283,38 @@ st.markdown(
     .wg-top{
       display:flex;
       align-items:center;
-      gap:12px;
-      margin-bottom:12px;
+      gap:10px;
+      margin-bottom:8px;
     }
     .wg-ico{ 
-        font-size:20px; 
+        font-size:18px; 
         opacity:0.95;
-        animation: float 3s ease-in-out infinite;
+        transition: transform 0.3s ease;
     }
-    .wg-label{ 
-        font-size:0.9rem; 
-        color:#9ca3af; 
-        font-weight:700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    .wg-card:hover .wg-ico {
+        transform: scale(1.2) rotate(5deg);
     }
+    .wg-label{ font-size:0.85rem; color:#9ca3af; font-weight:700; }
     .wg-value{ 
-        font-size:1.5rem; 
+        font-size:1.35rem; 
         font-weight:900; 
         color:#f9fafb; 
-        line-height: 1.2;
+        line-height: 1.1;
+        transition: color 0.3s ease;
+    }
+    .wg-card:hover .wg-value {
+        color: #16a34a;
     }
     .wg-sub{ 
-        margin-top:8px; 
+        margin-top:4px; 
         font-size:0.95rem; 
         color:#e5e7eb; 
         opacity:0.95; 
         word-break: break-word;
+        transition: opacity 0.3s ease;
+    }
+    .wg-card:hover .wg-sub {
+        opacity: 1;
     }
     .wg-sub a { 
         color: #60a5fa; 
@@ -315,330 +322,116 @@ st.markdown(
         transition: color 0.3s ease;
     }
     .wg-sub a:hover { 
-        color: #93c5fd;
         text-decoration: underline;
+        color: #93c5fd;
     }
 
     /* Labels */
-    label[data-testid="stWidgetLabel"] > div { color: #ffffff !important; opacity: 1 !important; font-weight: 600 !important; }
-    div[data-testid="stNumberInput"] label > div { color: #ffffff !important; opacity: 1 !important; font-weight: 600 !important; }
-    div[data-testid="stTextInput"] label > div { color: #ffffff !important; opacity: 1 !important; font-weight: 600 !important; }
-    div[data-testid="stSelectbox"] label > div { color: #ffffff !important; opacity: 1 !important; font-weight: 600 !important; }
-    div[data-testid="stCheckbox"] label span { color: #ffffff !important; opacity: 1 !important; font-weight: 600 !important; }
+    label[data-testid="stWidgetLabel"] > div { color: #ffffff !important; opacity: 1 !important; }
+    div[data-testid="stNumberInput"] label > div { color: #ffffff !important; opacity: 1 !important; }
+    div[data-testid="stTextInput"] label > div { color: #ffffff !important; opacity: 1 !important; }
+    div[data-testid="stSelectbox"] label > div { color: #ffffff !important; opacity: 1 !important; }
+    div[data-testid="stCheckbox"] label span { color: #ffffff !important; opacity: 1 !important; }
 
-    /* Input fields enhancement */
+    /* Input fields animation */
     input, select, textarea {
-        background: rgba(255,255,255,0.05) !important;
-        border: 1px solid rgba(255,255,255,0.15) !important;
-        border-radius: 8px !important;
-        color: #ffffff !important;
         transition: all 0.3s ease !important;
     }
     input:focus, select:focus, textarea:focus {
+        box-shadow: 0 0 0 2px rgba(22,163,74,0.2) !important;
         border-color: #16a34a !important;
-        box-shadow: 0 0 0 3px rgba(22,163,74,0.15) !important;
     }
 
     /* TABLES / DATAFRAMES */
     table { 
         color: #ffffff !important; 
-        border: 1px solid rgba(255,255,255,0.2) !important; 
-        border-radius: 12px !important; 
+        border: 1px solid rgba(255,255,255,0.35) !important; 
+        border-radius: 10px; 
         overflow: hidden;
         animation: fadeIn 0.5s ease-out;
     }
     thead tr th { 
         color: #ffffff !important; 
-        background-color: rgba(22,163,74,0.15) !important;
-        font-weight: 700 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-size: 0.85rem !important;
+        background-color: rgba(255,255,255,0.05) !important;
+        transition: background-color 0.3s ease;
+    }
+    thead tr th:hover {
+        background-color: rgba(255,255,255,0.08) !important;
     }
     tbody tr td { 
         color: #ffffff !important;
         transition: background-color 0.3s ease;
     }
     tbody tr:hover td {
-        background-color: rgba(22,163,74,0.08) !important;
+        background-color: rgba(255,255,255,0.03) !important;
     }
     div[data-testid="stDataFrame"] { 
-        border: 1px solid rgba(255,255,255,0.2) !important; 
-        border-radius: 12px !important; 
-        padding: 8px;
+        border: 1px solid rgba(255,255,255,0.35) !important; 
+        border-radius: 10px; 
+        padding: 6px;
         animation: fadeIn 0.5s ease-out;
     }
     div[data-testid="stDataFrame"] * { color: #ffffff !important; }
-    div[data-testid="stDataFrame"] th { 
-        background-color: rgba(22,163,74,0.15) !important;
-        font-weight: 700 !important;
-    }
+    div[data-testid="stDataFrame"] th { background-color: rgba(255,255,255,0.06) !important; }
     div[data-testid="stDataFrame"] td { background-color: transparent !important; }
     thead tr { border-bottom: 1px solid rgba(255,255,255,0.25) !important; }
-    tbody tr { 
-        border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-        transition: background-color 0.3s ease;
-    }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.08) !important; }
 
-    /* ────────── HOME HERO ────────── */
-    .wg-hero{
-        margin-top: 30px;
-        margin-bottom: 18px;
-    }
-    .wg-hero h1{
-        font-size: 3.2rem;
-        font-weight: 1000;
-        margin: 0;
-        color: #ffffff;
-        letter-spacing: 0.2px;
-    }
-    .wg-hero h2{
-        font-size: 2.0rem;
-        font-weight: 900;
-        margin: 10px 0 10px 0;
-        color: rgba(255,255,255,0.92);
-    }
-    .wg-hero p{
-        font-size: 1.0rem;
-        color: rgba(255,255,255,0.72);
-        margin-top: 8px;
-        max-width: 900px;
+    /* Charts */
+    [data-testid="stArrowVegaLiteChart"] {
+        animation: fadeInUp 0.6s ease-out;
     }
 
     /* Navbar wrapper */
     .wg-navline{
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-        padding-bottom: 12px;
-        margin-bottom: 24px;
-        animation: fadeIn 0.4s ease-out;
-        background: rgba(255,255,255,0.02);
-        padding: 12px 0;
-        margin-bottom: 32px;
-        border-radius: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 10px;
+        margin-bottom: 18px;
+        animation: slideInRight 0.5s ease-out;
     }
     .wg-brand{
         display:flex;
         align-items:center;
-        gap:12px;
-        font-size: 1.7rem;
+        gap:10px;
+        font-size: 1.6rem;
         font-weight: 1000;
         color: #ffffff;
-        cursor: default;
+        transition: transform 0.3s ease;
+    }
+    .wg-brand:hover {
+        transform: scale(1.02);
     }
     .wg-brand-badge{
-        width:40px;
-        height:40px;
+        width:36px;
+        height:36px;
         border-radius: 12px;
-        background: linear-gradient(135deg, rgba(22,163,74,0.2), rgba(22,163,74,0.1));
-        border: 1px solid rgba(22,163,74,0.4);
+        background: rgba(22,163,74,0.14);
+        border: 1px solid rgba(22,163,74,0.35);
         display:flex;
         align-items:center;
         justify-content:center;
-        font-size: 20px;
-        box-shadow: 0 4px 12px rgba(22,163,74,0.3);
-        animation: float 3s ease-in-out infinite;
-    }
-
-    /* Chart enhancements */
-    .stLineChart, .stBarChart {
-        animation: fadeInUp 0.6s ease-out;
-    }
-
-    /* Info/Warning/Error boxes */
-    .stAlert {
-        border-radius: 12px !important;
-        border: 1px solid rgba(255,255,255,0.15) !important;
-        animation: slideInRight 0.4s ease-out;
-    }
-
-    /* Download button special styling */
-    .stDownloadButton {
-        animation: fadeIn 0.5s ease-out;
-    }
-
-    /* Feature cards for home page */
-    .wg-feature-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-        margin-top: 50px;
-        animation: fadeInUp 1s ease-out 0.8s both;
-    }
-    
-    .wg-feature-card {
-        background: rgba(255,255,255,0.04);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 20px;
-        padding: 30px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .wg-feature-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(22,163,74,0.1) 0%, transparent 100%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-    
-    .wg-feature-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(22,163,74,0.4);
-        box-shadow: 0 20px 60px rgba(22,163,74,0.2);
-    }
-    
-    .wg-feature-card:hover::before {
-        opacity: 1;
-    }
-    
-    .wg-feature-icon {
-        font-size: 48px;
-        margin-bottom: 20px;
-        display: inline-block;
-        animation: float 3s ease-in-out infinite;
-    }
-    
-    .wg-feature-card:nth-child(2) .wg-feature-icon {
-        animation-delay: 0.5s;
-    }
-    
-    .wg-feature-card:nth-child(3) .wg-feature-icon {
-        animation-delay: 1s;
-    }
-    
-    .wg-feature-title {
-        font-size: 1.3rem;
-        font-weight: 800;
-        color: #ffffff;
-        margin-bottom: 12px;
-    }
-    
-    .wg-feature-desc {
-        font-size: 0.95rem;
-        color: rgba(255,255,255,0.65);
-        line-height: 1.6;
-    }
-    
-    .wg-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-top: 60px;
-        animation: fadeInUp 1s ease-out 1s both;
-    }
-    
-    .wg-stat-card {
-        background: rgba(22,163,74,0.1);
-        border: 1px solid rgba(22,163,74,0.3);
-        border-radius: 16px;
-        padding: 24px;
-        text-align: center;
+        font-size: 18px;
         transition: all 0.3s ease;
     }
-    
-    .wg-stat-card:hover {
-        background: rgba(22,163,74,0.15);
-        transform: scale(1.05);
+    .wg-brand:hover .wg-brand-badge {
+        background: rgba(22,163,74,0.25);
+        transform: rotate(5deg);
     }
     
-    .wg-stat-number {
-        font-size: 2.5rem;
-        font-weight: 1000;
-        color: #16a34a;
-        margin-bottom: 8px;
+    /* Success/Error/Warning/Info messages */
+    .stAlert {
+        animation: slideInRight 0.5s ease-out;
+        border-radius: 10px !important;
     }
     
-    .wg-stat-label {
-        font-size: 0.9rem;
-        color: rgba(255,255,255,0.7);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    /* Particle effect */
-    .wg-particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: -1;
-        pointer-events: none;
+    /* Selectbox & inputs */
+    div[data-baseweb="select"] {
+        animation: fadeIn 0.5s ease-out;
     }
     
-    .wg-particle {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: rgba(22,163,74,0.6);
-        border-radius: 50%;
-        animation: pulse 3s ease-in-out infinite;
-    }
-
-    /* Loading states */
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* Enhanced hero for main content pages */
-    .wg-hero-enhanced {
-        margin-top: 60px;
-        margin-bottom: 40px;
-        animation: fadeInUp 1s ease-out;
-    }
-    
-    .wg-hero-enhanced h1 {
-        font-size: 4.5rem;
-        font-weight: 1000;
-        margin: 0;
-        background: linear-gradient(135deg, #ffffff 0%, #16a34a 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -2px;
-        animation: fadeInUp 1s ease-out 0.2s both;
-    }
-    
-    .wg-hero-enhanced h2 {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin: 20px 0;
-        color: rgba(255,255,255,0.85);
-        animation: fadeInUp 1s ease-out 0.4s both;
-    }
-    
-    .wg-hero-enhanced p {
-        font-size: 1.15rem;
-        color: rgba(255,255,255,0.65);
-        margin-top: 15px;
-        max-width: 800px;
-        line-height: 1.7;
-        animation: fadeInUp 1s ease-out 0.6s both;
-    }
-
-    /* Smooth scrollbar */
-    ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-    ::-webkit-scrollbar-track {
-        background: rgba(255,255,255,0.05);
-    }
-    ::-webkit-scrollbar-thumb {
-        background: rgba(22,163,74,0.5);
-        border-radius: 5px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(22,163,74,0.7);
+    /* Loading spinner */
+    .stSpinner > div {
+        border-color: #16a34a transparent transparent transparent !important;
     }
     </style>
     """,
@@ -677,6 +470,26 @@ def load_data():
     )
     conn.close()
     return df
+
+
+@st.cache_data
+def load_port_data(url):
+    """Load latest port scan data for a URL"""
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        query = """
+        SELECT port, service, is_open, response_time, status, scanned_at
+        FROM port_scans 
+        WHERE url = ? 
+        AND scanned_at = (SELECT MAX(scanned_at) FROM port_scans WHERE url = ?)
+        ORDER BY port
+        """
+        df = pd.read_sql_query(query, conn, params=(url, url))
+        conn.close()
+        return df
+    except:
+        conn.close()
+        return pd.DataFrame()
 
 
 def load_config():
@@ -828,72 +641,6 @@ def _content_change_check(db_path: Path, url: str, timeout_s: int = 8):
 
 # ───────────────────── TOP NAVBAR ─────────────────────
 def render_navbar(active: str):
-    # Enhanced navbar with smooth transitions and hover effects
-    st.markdown('''
-        <style>
-        .wg-navline {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 12px 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: slideDown 0.5s ease-out;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .wg-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 24px;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .wg-brand-badge {
-            font-size: 28px;
-            filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.3));
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        
-        .wg-active-pill {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
-            50% { box-shadow: 0 4px 25px rgba(99, 102, 241, 0.6); }
-        }
-        </style>
-    ''', unsafe_allow_html=True)
-    
     st.markdown('<div class="wg-navline">', unsafe_allow_html=True)
     left, mid, right = st.columns([1.3, 2.5, 1.2])
 
@@ -916,7 +663,7 @@ def render_navbar(active: str):
                 if active == page_name:
                     st.markdown(f"<div class='wg-active-pill'>{label}</div>", unsafe_allow_html=True)
                 else:
-                    if st.button(label, type="secondary", use_container_width=True, key=f"nav{page_name}"):
+                    if st.button(label, type="secondary", use_container_width=True, key=f"nav_{page_name}"):
                         st.session_state["page"] = page_name
                         st.rerun()
 
@@ -931,52 +678,12 @@ def render_navbar(active: str):
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-
 # ───────────────────── HOME PAGE ─────────────────────
 def render_home_page():
     render_navbar("Home")
 
-    # Enhanced CSS with animations
     st.markdown("""
     <style>
-    @keyframes gradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-    }
-    
-    @keyframes slideInRight {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-    
     .wg-animated-bg {
         position: fixed;
         top: 0;
@@ -1136,27 +843,6 @@ def render_home_page():
         animation: fadeInUp 1s ease-out 1.2s both;
     }
     
-    .wg-cta-button {
-        display: inline-block;
-        padding: 16px 40px;
-        background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
-        color: white;
-        text-decoration: none;
-        border-radius: 999px;
-        font-weight: 800;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        box-shadow: 0 10px 30px rgba(22,163,74,0.3);
-    }
-    
-    .wg-cta-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(22,163,74,0.5);
-        border-color: rgba(255,255,255,0.3);
-    }
-    
-    /* Particle effect */
     .wg-particles {
         position: fixed;
         top: 0;
@@ -1291,172 +977,10 @@ def render_home_page():
 # ───────────────────── MONITOR PAGE ─────────────────────
 def render_monitor_page():
     render_navbar("Monitor")
-    
-    # Enhanced monitor page styles
-    st.markdown('''
-        <style>
-        .big-title {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-        
-        .subtitle {
-            font-size: 18px;
-            color: #94a3b8;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.7s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .section-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            animation: scaleIn 0.5s ease-out;
-        }
-        
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #f8fafc;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .pill {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        
-        .wg-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .wg-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: cardSlideIn 0.6s ease-out backwards;
-        }
-        
-        @keyframes cardSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .wg-card:nth-child(1) { animation-delay: 0.1s; }
-        .wg-card:nth-child(2) { animation-delay: 0.15s; }
-        .wg-card:nth-child(3) { animation-delay: 0.2s; }
-        .wg-card:nth-child(4) { animation-delay: 0.25s; }
-        .wg-card:nth-child(5) { animation-delay: 0.3s; }
-        .wg-card:nth-child(6) { animation-delay: 0.35s; }
-        .wg-card:nth-child(7) { animation-delay: 0.4s; }
-        .wg-card:nth-child(8) { animation-delay: 0.45s; }
-        .wg-card:nth-child(9) { animation-delay: 0.5s; }
-        
-        .wg-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-            border-color: rgba(99, 102, 241, 0.5);
-        }
-        
-        .wg-top {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        
-        .wg-ico {
-            font-size: 24px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-        }
-        
-        .wg-label {
-            font-size: 14px;
-            color: #94a3b8;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .wg-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #f8fafc;
-            margin-bottom: 4px;
-        }
-        
-        .wg-sub {
-            font-size: 13px;
-            color: #64748b;
-            margin-top: 4px;
-        }
-        
-        .wg-sub a {
-            color: #6366f1;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .wg-sub a:hover {
-            color: #a855f7;
-            text-decoration: underline;
-        }
-        </style>
-    ''', unsafe_allow_html=True)
 
     st.markdown(
         """
-        <div class="big-title">WebGuard – Uptime & SSL Monitor</div>
+        <div class="big-title">WebGuard – Uptime &amp; SSL Monitor</div>
         <div class="subtitle">
             Live uptime, response time, and SSL health for your client websites.
         </div>
@@ -1584,6 +1108,59 @@ def render_monitor_page():
 
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # NEW: Port Monitoring Section
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">🔌 Port Monitoring</div>', unsafe_allow_html=True)
+
+    port_data = load_port_data(selected_url)
+    
+    if not port_data.empty:
+        # Show port statistics
+        open_ports = port_data[port_data['is_open'] == 1]
+        closed_ports = port_data[port_data['is_open'] == 0]
+        
+        pcol1, pcol2, pcol3 = st.columns(3)
+        with pcol1:
+            st.metric("Total Ports Scanned", len(port_data))
+        with pcol2:
+            st.metric("Open Ports", len(open_ports), delta=None)
+        with pcol3:
+            st.metric("Closed Ports", len(closed_ports), delta=None)
+        
+        spacer()
+        
+        # Display open ports
+        if not open_ports.empty:
+            st.markdown("**🟢 Open Ports**")
+            
+            # Create a nice display of open ports
+            open_ports_display = open_ports[['port', 'service', 'response_time']].copy()
+            open_ports_display['response_time'] = open_ports_display['response_time'].apply(lambda x: f"{x:.3f}s")
+            open_ports_display.columns = ['Port', 'Service', 'Response Time']
+            
+            st.dataframe(open_ports_display, use_container_width=True, hide_index=True)
+            
+            # Security warnings
+            insecure_ports = open_ports[open_ports['port'].isin([21, 23])]
+            if not insecure_ports.empty:
+                st.error(f"🚨 Security Warning: Insecure ports detected! Ports {list(insecure_ports['port'])} should be secured or closed.")
+            
+            # Database ports warning
+            db_ports = open_ports[open_ports['port'].isin([3306, 5432, 27017, 6379])]
+            if not db_ports.empty:
+                st.warning(f"⚠️ Database ports are publicly accessible: {list(db_ports['port'])}. Consider firewall rules.")
+        else:
+            st.info("No open ports detected in the last scan.")
+        
+        # Last scan time
+        if not port_data.empty:
+            last_scan = port_data['scanned_at'].iloc[0]
+            st.caption(f"Last port scan: {last_scan}")
+    else:
+        st.info("No port scan data available yet. Port scans run automatically during monitoring.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
     # Analytics & History
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Analytics & History</div>', unsafe_allow_html=True)
@@ -1624,29 +1201,9 @@ def render_monitor_page():
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-
 # ───────────────────── SETTINGS PAGE ─────────────────────
 def render_settings_page():
     render_navbar("Settings")
-    
-    # Enhanced settings page styles
-    st.markdown('''
-        <style>
-        .settings-input-group {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .settings-input-group:hover {
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
-        }
-        </style>
-    ''', unsafe_allow_html=True)
 
     st.markdown(
         """
@@ -1661,7 +1218,7 @@ def render_settings_page():
     config = load_config()
 
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">⚙️ General Settings</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">General Settings</div>', unsafe_allow_html=True)
 
     col_interval, _, _ = st.columns([0.33, 0.33, 0.34])
     with col_interval:
@@ -1696,16 +1253,22 @@ def render_settings_page():
 
     with col_enable:
         st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-        email_enabled = st.checkbox(
+        email_enabled_input = st.checkbox(
             "Enable email alerts",
             value=config.get("email_enabled", True),
-            key="email_enabled",
+            key="email_enabled_checkbox",
         )
 
+    # Auto-save email toggle in real-time
+    if email_enabled_input != config.get("email_enabled", True):
+        config["email_enabled"] = bool(email_enabled_input)
+        save_config(config)
+        st.success("✅ Email alerts " + ("enabled" if email_enabled_input else "disabled") + " - changes applied immediately!")
+    
     if st.button("💾 Save settings", key="save_settings", type="primary"):
         config["check_interval_minutes"] = int(interval)
         config["ssl_expiry_warning_days"] = int(ssl_warning)
-        config["email_enabled"] = bool(email_enabled)
+        config["email_enabled"] = bool(email_enabled_input)
         config["alert_email"] = alert_email_input.strip()
         save_config(config)
         st.rerun()
@@ -1713,7 +1276,7 @@ def render_settings_page():
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">🌐 Websites</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Websites</div>', unsafe_allow_html=True)
 
     websites = config.get("websites", [])
 
@@ -1741,7 +1304,7 @@ def render_settings_page():
             config["websites"] = websites
             config["check_interval_minutes"] = int(interval)
             config["ssl_expiry_warning_days"] = int(ssl_warning)
-            config["email_enabled"] = bool(email_enabled)
+            config["email_enabled"] = bool(email_enabled_input)
             config["alert_email"] = alert_email_input.strip()
             save_config(config)
             st.cache_data.clear()
@@ -1764,7 +1327,7 @@ def render_settings_page():
             config["websites"] = websites
             config["check_interval_minutes"] = int(interval)
             config["ssl_expiry_warning_days"] = int(ssl_warning)
-            config["email_enabled"] = bool(email_enabled)
+            config["email_enabled"] = bool(email_enabled_input)
             config["alert_email"] = alert_email_input.strip()
             save_config(config)
             st.cache_data.clear()
@@ -1773,9 +1336,6 @@ def render_settings_page():
         st.info("No websites to remove.")
 
     st.markdown("</div>", unsafe_allow_html=True)
-
-    st.caption("Email credentials (.env) remain hidden for security.")
-
 
 # ───────────────────── REPORTS PAGE ─────────────────────
 def render_reports_page():
@@ -2247,7 +1807,6 @@ def render_reports_page():
         """,
         unsafe_allow_html=True,
     )
-
 
 # ───────────────────── MAIN ─────────────────────
 def main():
