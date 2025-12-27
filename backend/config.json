@@ -40,6 +40,10 @@
     {
       "url": "https://inkandcollectables.com/",
       "client": "Salman Website"
+    },
+    {
+      "url": "https://moe.gov.bh/",
+      "client": "MOE"
     }
   ],
   "ssl_expiry_warning_days": 15,
@@ -47,13 +51,13 @@
   "alert_email": "ziad.sh.3010@gmail.com",
   "monitoring_state": {
     "https://google.com/": {
-      "content_hash": "7588292354877e9307f8962895bb23296518a67da4f9ddb255856dc6e51550e5",
-      "avg_response_time": 0.676559,
+      "content_hash": "8cc9face3ac5b8887717e8b71349443079f8678569cc3bab38d6efad2a217299",
+      "avg_response_time": 0.708947,
       "incidents_count": 2
     },
     "https://www.youtube.com/": {
-      "content_hash": "8886bb77a6dd9cb7e8f8008d4e5244324e936fdbfb57e9c3c77abad430ec5816",
-      "avg_response_time": 0.640137,
+      "content_hash": "ed3b6b787bb28613b33a6628f347ce93db89c96aec8bb991cc8eb2427c622813",
+      "avg_response_time": 0.637836,
       "incidents_count": 2
     },
     "https://fake-domain-for-test-12345.com": {
@@ -62,39 +66,44 @@
       "incidents_count": 4
     },
     "https://www.uob.edu.bh/?lang=ar": {
-      "content_hash": "bd7f9e39da35e36896af67bcb313e989f215e9c695ef4c103d034d2a9e387d74",
-      "avg_response_time": 1.696095,
+      "content_hash": "3e0ea9970dc2b51a752e48285cf1f929fc4feeb427cd4b646d249b4fae9849b1",
+      "avg_response_time": 1.794228,
       "incidents_count": 2
     },
     "https://selfservice.polytechnic.bh/": {
       "content_hash": "8beaf045159a7625f73a580f084c7a60685f65bec435730e909c3d7de502cc33",
-      "avg_response_time": 0.487538,
+      "avg_response_time": 0.481358,
       "incidents_count": 2
     },
     "https://moodle.polytechnic.bh/moodle/admin/tool/dataprivacy/summary.php": {
-      "content_hash": "f187c418dcbd27fbfe822ee175e34597e258ccd475cb2ac8696ef9ada16fcdd8",
-      "avg_response_time": 0.357794,
+      "content_hash": "da8c7205d237948c7d10f40dcf9e47f6906b926da7f773d3fe16546889388ddd",
+      "avg_response_time": 0.37617,
       "incidents_count": 3
     },
     "https://alothman.cc/": {
       "content_hash": "fd1dd9be859cdc00de8b84698460506f71772484e534757245a456ef367344b3",
-      "avg_response_time": 0.789161,
+      "avg_response_time": 0.751515,
       "incidents_count": 3
     },
     "https://ar.aliexpress.com/?gad_source=1&gatewayAdapt=glo2ara": {
-      "content_hash": "cb1a8f31a734864591afbce3d87a321138312e779d7f625394eaa319696c8505",
-      "avg_response_time": 0.883426,
+      "content_hash": "aee424efdcc4af668ed62622e72a26faa26dae67591b9975dec3d925ce690a23",
+      "avg_response_time": 1.154782,
       "incidents_count": 3
     },
     "https://P@ypal.com/": {
-      "content_hash": "c337aaed5152625f0312e900a65c5cb9f5f710c3af9735ef98f6930830b3af47",
-      "avg_response_time": 0.204677,
+      "content_hash": "a945b892fd5f3e6e007adf8249ce939e15899631221928d9f4472a137c91d4e3",
+      "avg_response_time": 0.221737,
       "incidents_count": 3
     },
     "https://inkandcollectables.com/": {
-      "content_hash": "6cb0f1cbc8319ac870df4e456d28367a7d14b67380f2d0378fee5fe9a470971f",
-      "avg_response_time": 1.794522,
+      "content_hash": "71d1b292c856fe9030a4893201165ac85fd5d237416e443889cc664bc05182a5",
+      "avg_response_time": 1.266891,
       "incidents_count": 4
+    },
+    "https://moe.gov.bh/": {
+      "content_hash": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+      "avg_response_time": 1.192657,
+      "incidents_count": 1
     }
   }
 }
