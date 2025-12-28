@@ -327,6 +327,47 @@ def send_html_alert(
         print(f"[EMAIL ERROR] ❌ {e}")
 
 
+def send_ssl_expiry_alert(client: str, url: str, ssl_days_left: int, email_enabled: bool, alert_email: str | None):
+    """Send SSL certificate expiry alert"""
+    if email_enabled and alert_email:
+        alert_message = f"Client: {client}\nURL: {url}\nSSL expires in {ssl_days_left} days!"
+        send_email_alert(
+            subject=f"WebGuard SSL ALERT: {url} expiring soon",
+            message=alert_message,
+            receiver_email=alert_email,
+        )
+
+
+def send_dns_failure_alert(client: str, url: str, domain: str, dns_info: str, email_enabled: bool, alert_email: str | None):
+    """Send DNS resolution failure alert"""
+    if email_enabled and alert_email:
+        send_email_alert(
+            subject=f"WebGuard DNS ALERT: {url}",
+            message=f"Client: {client}\nURL: {url}\nDomain: {domain}\nDNS Resolution Failed: {dns_info}",
+            receiver_email=alert_email,
+        )
+
+
+def send_port_security_alert(client: str, url: str, domain: str, critical_open: list, recommendations: list, email_enabled: bool, alert_email: str | None):
+    """Send port security alert for critical open ports"""
+    if email_enabled and alert_email:
+        send_email_alert(
+            subject=f"WebGuard PORT SECURITY ALERT: {url}",
+            message=f"Client: {client}\nURL: {url}\nDomain: {domain}\n\nCRITICAL: The following security-sensitive ports are publicly accessible:\n{', '.join(map(str, critical_open))}\n\nRecommendations:\n" + "\n".join(recommendations),
+            receiver_email=alert_email,
+        )
+
+
+def send_malicious_url_alert(client: str, url: str, email_enabled: bool, alert_email: str | None):
+    """Send malicious URL detection alert"""
+    if email_enabled and alert_email:
+        send_email_alert(
+            subject=f"WebGuard SECURITY ALERT: Malicious URL detected - {url}",
+            message=f"Client: {client}\nURL: {url}\nReputation Score: MALICIOUS\n\nThis URL has been flagged as potentially dangerous. Please review immediately.",
+            receiver_email=alert_email,
+        )
+
+
 def send_daily_summary(
     receiver_email: str,
     total_checks: int,

@@ -12,10 +12,16 @@ import pandas as pd
 
 from db import init_db, insert_check
 from ssl_check import get_ssl_expiry_days
-from email_alerts import send_email_alert
+from email_alerts import (
+    send_email_alert,
+    send_ssl_expiry_alert,
+    send_dns_failure_alert,
+    send_port_security_alert,
+    send_malicious_url_alert
+)
 
 from port_check import check_multiple_ports, get_port_recommendations
-from db import init_db, insert_check, insert_port_scan_results  # Add insert_port_scan_results
+from db import init_db, insert_check, insert_port_scan_results
 
 CONFIG_PATH = Path(__file__).parent / "config.json"
 DB_PATH = Path(__file__).parent.parent / "db" / "webguard.db"
@@ -265,13 +271,7 @@ def check_single_website(
 
             # SSL EXPIRY ALERT
             if ssl_days_left <= ssl_warning_days:
-                alert_message = f"Client: {client}\nURL: {url}\nSSL expires in {ssl_days_left} days!"
-                if email_enabled and alert_email:
-                    send_email_alert(
-                        subject=f"WebGuard SSL ALERT: {url} expiring soon",
-                        message=alert_message,
-                        receiver_email=alert_email,
-                    )
+                send_ssl_expiry_alert(client, url, ssl_days_left, email_enabled, alert_email)
         else:
             ssl_ok = None
             print(f"⚠️ SSL Days Left: N/A (Could not determine)")
@@ -291,12 +291,7 @@ def check_single_website(
         print(f"   └─ {dns_info}")
     else:
         print(f"   └─ Error: Unable to resolve domain")
-        if email_enabled and alert_email:
-            send_email_alert(
-                subject=f"WebGuard DNS ALERT: {url}",
-                message=f"Client: {client}\nURL: {url}\nDomain: {domain}\nDNS Resolution Failed: {dns_info}",
-                receiver_email=alert_email,
-            )
+        send_dns_failure_alert(client, url, domain, dns_info, email_enabled, alert_email)
 
     # ─────────────────────────────────────────────────────────
     # 4) PORT MONITORING - Open Ports Scan
@@ -333,12 +328,8 @@ def check_single_website(
                     critical_ports_check = [23, 3306, 5432, 27017, 6379]
                     critical_open = [p for p in critical_ports_check if p in open_ports]
                     
-                    if critical_open and email_enabled and alert_email:
-                        send_email_alert(
-                            subject=f"WebGuard PORT SECURITY ALERT: {url}",
-                            message=f"Client: {client}\nURL: {url}\nDomain: {domain}\n\nCRITICAL: The following security-sensitive ports are publicly accessible:\n{', '.join(map(str, critical_open))}\n\nRecommendations:\n" + "\n".join(recommendations),
-                            receiver_email=alert_email,
-                        )
+                    if critical_open:
+                        send_port_security_alert(client, url, domain, critical_open, recommendations, email_enabled, alert_email)
             else:
                 print(f"   └─ No common ports found open")
                 
@@ -354,12 +345,7 @@ def check_single_website(
     
     if reputation == "Malicious":
         print(f"❌ URL Reputation: MALICIOUS ⚠️")
-        if email_enabled and alert_email:
-            send_email_alert(
-                subject=f"WebGuard SECURITY ALERT: Malicious URL detected - {url}",
-                message=f"Client: {client}\nURL: {url}\nReputation Score: MALICIOUS\n\nThis URL has been flagged as potentially dangerous. Please review immediately.",
-                receiver_email=alert_email,
-            )
+        send_malicious_url_alert(client, url, email_enabled, alert_email)
     elif reputation == "Risky":
         print(f"⚠️ URL Reputation: Risky ⚠️")
     else:
@@ -373,12 +359,7 @@ def check_single_website(
     if content_state == "Changed":
         print(f"⚠️ Content Change: Changed ⚠️")
         print(f"   └─ Content has changed!")
-        if email_enabled and alert_email:
-            send_email_alert(
-                subject=f"WebGuard CONTENT ALERT: {url} content changed",
-                message=f"Client: {client}\nURL: {url}\nContent Status: {content_state}\nDetails: {content_info}",
-                receiver_email=alert_email,
-            )
+        
     elif content_state == "No change":
         print(f"✅ Content Change: No change")
     else:
