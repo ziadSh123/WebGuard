@@ -4,15 +4,15 @@ import streamlit as st
 from components.navbar import render_navbar
 from components.helpers import load_config, save_config, spacer
 
-
+# Renders the whole page
 def render():
     render_navbar("Settings")
-
+# Title And SubTitle
     st.markdown(
         """
         <div class="big-title">WebGuard – Settings</div>
         <div class="subtitle">
-            Configure monitoring intervals, email alerts, and managed websites.
+            Configure monitoring intervals, email alerts, and managed websites. 
         </div>
         """,
         unsafe_allow_html=True,
@@ -120,12 +120,12 @@ def render():
     if websites:
         col_sel, _, _ = st.columns([0.33, 0.33, 0.34])
         with col_sel:
-            options = [f"{w['client']} – {w['url']}" for w in websites]
-            to_remove = st.selectbox("Select website to remove", options, key="remove_select")
+            options = [f"{w['client']} – {w['url']}" for w in websites] #Drop Down List
+            to_remove = st.selectbox("Select website to remove", options, key="remove_select") # Pick WebSite To Remove
 
-        if st.button("🗑️ Remove selected website", key="remove_website_btn", type="primary"):
-            idx = options.index(to_remove)
-            del websites[idx]
+        if st.button("🗑️ Remove selected website", key="remove_website_btn", type="primary"): # When clicked
+            idx = options.index(to_remove) # Finds Position
+            del websites[idx] # Removes Website
             config["websites"] = websites
             config["check_interval_minutes"] = int(interval)
             config["ssl_expiry_warning_days"] = int(ssl_warning)
@@ -139,4 +139,4 @@ def render():
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    st.caption("Email credentials (.env) remain hidden for security.")
+    
